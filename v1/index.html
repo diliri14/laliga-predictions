@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+		<link
+			href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="{{ url_for('static', filename='style.css') }}"
+			rel="stylesheet"
+		/>
+		<title>Predicciones de La Liga</title>
+		<!-- Este es el archivo que muestra la página principal de la aplicación Flask. En el cuerpo de la página, se encuentra un formulario con dos menús desplegables para seleccionar los equipos a comparar. -->
+		<script>
+			// El script de JavaScript se utiliza para deshabilitar un equipo en el menú desplegable de visitante si se ha seleccionado como equipo local y viceversa. Además, si los equipos seleccionados son iguales, el botón de enviar el formulario se deshabilitará.
+
+			function disableSelectedTeam(selectBox, selectedTeam) {
+				var options = selectBox.options;
+				for (var i = 0; i < options.length; i++) {
+					if (options[i].value == selectedTeam) {
+						options[i].disabled = true;
+					} else {
+						options[i].disabled = false;
+					}
+				}
+
+				var localTeam = document.getElementsByName("local_team")[0].value;
+				var visitorTeam = document.getElementsByName("visitor_team")[0].value;
+
+				var compareButton = document.querySelector("button[type=submit]");
+
+				if (localTeam === visitorTeam) {
+					compareButton.disabled = true;
+				} else {
+					compareButton.disabled = false;
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="form-container">
+			<h1>Predicciones de Resultados para La Liga 2022-23</h1>
+			<h2>Seleccione los equipos a comparar</h1>
+			<form action="/result" method="post">
+				<table class="form-table">
+					<tr>
+						<td>
+							<label for="local_team">Equipo local:</label>
+							<select
+								id="local_team"
+								name="local_team"
+								onchange="disableSelectedTeam(this.form.visitor_team, this.value)"
+							>
+								{% for team in teams %}
+								<option value="{{ team }}">{{ team }}</option>
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<label for="visitor_team">Equipo visitante:</label>
+							<select
+								id="visitor_team"
+								name="visitor_team"
+								onchange="disableSelectedTeam(this.form.local_team, this.value)"
+							>
+								{% for team in teams %}
+								<option value="{{ team }}">{{ team }}</option>
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+				</table>
+				<button type="submit" disabled>Comparar</button>
+			</form>
+			<p class="info-input">Se utilizarán datos desde la temporada 2017 hasta la actualidad</p>
+		</div>
+
+		<footer class="footer">
+			<p>Proyecto Personal - DLR@2023</p>
+		</footer>
+	</body>
+</html>

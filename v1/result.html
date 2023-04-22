@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link
+			href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="{{ url_for('static', filename='style.css') }}"
+			rel="stylesheet"
+		/>
+		<title>Resultados de la Predicción</title>
+	</head>
+	<body>
+		<!-- La página muestra la predicción de resultados entre dos equipos seleccionados en la página principal. -->
+		<div class="result-container">
+			<h1>Predicciones para {{ local_team }} vs {{ visitor_team }}</h1>
+			<div class="general-results-div">
+				<h2>Predicción General</h2>
+				<div class="general-result-container">
+					<p>Gana {{ local_team }}: {{ general_win_local }}%</p>
+					<p>Empate: {{ general_draw }}%</p>
+					<p>Gana {{ visitor_team }}: {{ general_win_visitor }}%</p>
+				</div>
+				<div class="win-bar">
+					<div
+						class="local-win-bar"
+						style="width: {{ local_win_probability }}%;"
+					>
+						<span>Gana Local</span>
+					</div>
+					<div class="draw-bar" style="width: {{ draw_probability }}%;">
+						<span>Empate</span>
+					</div>
+
+					<div
+						class="visitor-win-bar"
+						style="width: {{ visitor_win_probability }}%;"
+					>
+						<span>Gana Visitante</span>
+					</div>
+				</div>
+				<p>
+					La probabilidad general se calcula como el promedio de los 3 métodos
+					de predicción a continuación
+				</p>
+			</div>
+
+			<table class="result-table poisson-table">
+				<tr class="title-row">
+					<th colspan="3">Predicción por Distribución de Poisson</th>
+				</tr>
+				<tr>
+					<td>Gana {{ local_team }}</td>
+					<td>:</td>
+					<td>{{ poisson_win_local }}</td>
+				</tr>
+				<tr>
+					<td>Empate</td>
+					<td>:</td>
+					<td>{{ poisson_draw }}</td>
+				</tr>
+				<tr>
+					<td>Gana {{ visitor_team }}</td>
+					<td>:</td>
+					<td>{{ poisson_win_visitor }}</td>
+				</tr>
+			</table>
+			<table class="result-table" class="head-to-head-table">
+				<tr class="title-row">
+					<th colspan="3">Predicción por Enfrentamiento Directo</th>
+				</tr>
+				<tr>
+					<td>Gana {{ local_team }}</td>
+					<td>:</td>
+					<td>{{ headtohead_win_local }}</td>
+				</tr>
+				<tr>
+					<td>Empate</td>
+					<td>:</td>
+					<td>{{ headtohead_draw }}</td>
+				</tr>
+				<tr>
+					<td>Gana {{ visitor_team }}</td>
+					<td>:</td>
+					<td>{{ headtohead_win_visitor }}</td>
+				</tr>
+			</table>
+			<table class="result-table" class="current-shape-table">
+				<tr class="title-row">
+					<th colspan="3">Predicción por Forma Actual de los Equipos</th>
+				</tr>
+				<tr>
+					<td>Gana {{ local_team }}</td>
+					<td>:</td>
+					<td>{{ shape_win_local }}</td>
+				</tr>
+				<tr>
+					<td>Empate</td>
+					<td>:</td>
+					<td>{{ shape_draw }}</td>
+				</tr>
+				<tr>
+					<td>Gana {{ visitor_team }}</td>
+					<td>:</td>
+					<td>{{ shape_win_visitor }}</td>
+				</tr>
+			</table>
+
+			<form action="/" method="get">
+				<button type="submit">Hacer otra comparación</button>
+			</form>
+		</div>
+
+		<div class="button-container">
+			<form
+				action="https://colab.research.google.com/drive/1rVrkDVD-JuBO8vo376SE680c9u7QaURL?usp=sharing"
+				target="_blank"
+				class="info-section"
+			>
+				<button type="info">Información sobre los cálculos</button>
+			</form>
+		</div>
+
+		<footer class="footer">
+			<p>Proyecto Personal - DLR@2023</p>
+		</footer>
+	</body>
+</html>
